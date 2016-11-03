@@ -74,7 +74,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="clicked" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -185,7 +184,6 @@
                     <property name="primary_icon_name">edit-find-symbolic</property>
                     <property name="primary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">False</property>
-                    <signal name="changed" handler="changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

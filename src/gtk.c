@@ -11,33 +11,50 @@ static void changeInfo(GtkWidget *widget,gpointer data){
 
 }
 
-int main (int argc,char **argv){
+static void create(GtkApplication *app,gpointer user_data){
 	GtkBuilder *builder;
-	GObject *window;
-	GObject *button;
-	GObject *searchBar;
+		GObject *window;
+		GObject *button;
+		GObject *searchBar;
 
-	gtk_init (&argc, &argv);
+		/* Construct a GtkBuilder instance and load our UI description */
+		builder = gtk_builder_new_from_file("molicule-display1.glade");
 
-	/* Construct a GtkBuilder instance and load our UI description */
-	builder = gtk_builder_new ();
-	gtk_builder_add_from_file (builder, "molicule-display1.glade", NULL);
+		g_print("building...\n");
+		g_print("window\n");
+		/* Connect signal handlers to the constructed widgets. */
+		window = gtk_builder_get_object (builder, "mainWindow");
+		g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-	/* Connect signal handlers to the constructed widgets. */
-	window = gtk_builder_get_object (builder, "window");
-	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+		g_print("search bar\n");
+		searchBar = gtk_builder_get_object(builder, "searchBar");
+		g_signal_connect(searchBar,"search-changed",G_CALLBACK(changeInfo), NULL);
 
-	searchBar = gtk_builder_get_object(builder, "searchBar");
-	g_signal_connect(searchBar,"searchChanged",G_CALLBACK(changeInfo), NULL);
-
-	button = gtk_builder_get_object (builder, "fileQuit");
-	g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
-
-	gtk_main () ;
-
+		g_print("button\n");
+		button = gtk_builder_get_object (builder, "fileQuit");
+		g_signal_connect (button, "activate", G_CALLBACK (gtk_main_quit), NULL);
 
 
-	return 0;
+		GtkWidget *top_window;
+		top_window = GTK_WIDGET(window);
+		if(!top_window){
+			g_critical("NO FILE!");
+		}
+		g_object_unref(builder);
+		gtk_window_set_application(GTK_WINDOW(top_window),GTK_APPLICATION(app));
+		gtk_widget_show_all(GTK_WIDGET(window));
+}
+
+int main (int argc,char **argv){
+	int status;
+
+	GtkApplication *app;
+	app = gtk_application_new ("org.aj.gui",G_APPLICATION_FLAGS_NONE);
+	g_signal_connect(app,"activate",G_CALLBACK(create),NULL);
+	status = g_application_run (G_APPLICATION(app),argc,argv);
+	g_object_unref (app);
+
+	return status;
 }
 
 

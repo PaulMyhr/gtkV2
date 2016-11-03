@@ -4,7 +4,9 @@
   <requires lib="gtk+" version="3.16"/>
   <object class="GtkTextBuffer" id="dataText"/>
   <object class="GtkWindow" id="mainWindow">
+    <property name="name">mainWindow</property>
     <property name="can_focus">False</property>
+    <property name="window_position">center</property>
     <signal name="destroy" handler="destroy" swapped="no"/>
     <child>
       <object class="GtkBox" id="fileMenu">
@@ -74,7 +76,6 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="clicked" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -185,7 +186,6 @@
                     <property name="primary_icon_name">edit-find-symbolic</property>
                     <property name="primary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">False</property>
-                    <signal name="search-changed" handler="searchChanged" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

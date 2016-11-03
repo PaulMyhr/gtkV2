@@ -33,7 +33,7 @@ int main (int argc,char **argv){
 	button = gtk_builder_get_object (builder, "fileQuit");
 	g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
 
-	gtk_main ();
+	gtk_main () ;
 
 
 

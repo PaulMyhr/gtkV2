@@ -8,7 +8,9 @@ static void print_value(GtkWidget *widget, gpointer data){
 }
 
 static void changeInfo(GtkWidget *widget,gpointer data){
-
+	GtkTextBuffer *buf = GTK_TEXT_BUFFER(data);
+	g_print("trying to write to text buffer");
+	gtk_text_buffer_set_text(buf,"You have searched!",18);
 }
 
 static void create(GtkApplication *app,gpointer user_data){
@@ -16,6 +18,8 @@ static void create(GtkApplication *app,gpointer user_data){
 		GObject *window;
 		GObject *button;
 		GObject *searchBar;
+		GObject *textBuffer;
+		GObject *GL_Spacer;
 
 		/* Construct a GtkBuilder instance and load our UI description */
 		builder = gtk_builder_new_from_file("molicule-display1.glade");
@@ -28,17 +32,23 @@ static void create(GtkApplication *app,gpointer user_data){
 
 		g_print("search bar\n");
 		searchBar = gtk_builder_get_object(builder, "searchBar");
-		g_signal_connect(searchBar,"search-changed",G_CALLBACK(changeInfo), NULL);
+		textBuffer = gtk_builder_get_object(builder, "dataText");
+		g_signal_connect(searchBar,"search-changed",G_CALLBACK(changeInfo),textBuffer);
 
 		g_print("button\n");
 		button = gtk_builder_get_object (builder, "fileQuit");
-		g_signal_connect (button, "activate", G_CALLBACK (gtk_main_quit), NULL);
+		g_signal_connect (button, "activate", G_CALLBACK (g_application_quit), NULL);
+
+		g_print("GL_Area\n");
+		GL_Spacer = gtk_builder_get_object(builder,"GL_Spacer");
+		GtkWidget *spacer = GTK_WIDGET(GL_Spacer);
 
 
+		g_print("show window\n");
 		GtkWidget *top_window;
 		top_window = GTK_WIDGET(window);
 		if(!top_window){
-			g_critical("NO FILE!");
+			g_critical("NO GLADE FILE!");
 		}
 		g_object_unref(builder);
 		gtk_window_set_application(GTK_WINDOW(top_window),GTK_APPLICATION(app));
